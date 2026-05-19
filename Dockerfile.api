@@ -1,0 +1,24 @@
+# 1. Pilih Base Image (OS Python yang ringan)
+FROM python:3.9-slim
+
+# 2. Bikin folder kerja di dalam container bernama /app
+WORKDIR /app
+
+# 3. Copy file requirements dan install library
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 4. Copy source code kita ke dalam container
+# Folder 'src' di laptop -> folder '/app/src' di container
+COPY src/ src/
+
+# 5. PENTING: Copy folder mlruns (model) ke dalam container
+# Tanpa ini, container tidak punya model untuk di-load!
+COPY mlruns/ mlruns/
+
+# 6. Buka port 8000 (Pintu akses FastAPI)
+EXPOSE 8000
+
+# 7. Perintah yang dijalankan saat container nyala
+# --host 0.0.0.0 artinya "terima koneksi dari mana saja" (wajib di Docker)
+CMD ["uvicorn", "src.app:app", "--host", "0.0.0.0", "--port", "8000"]

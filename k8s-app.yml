@@ -1,0 +1,86 @@
+# ==========================================
+# 1. DEPLOYMENT & SERVICE BACKEND
+# ==========================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1             # Jumlah copy/replika backend yang jalan
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: image-backend:latest
+        imagePullPolicy: Never  # KUNCI: Jangan download dari internet, pakai yang di Minikube
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: model-volume
+          mountPath: /app/mlruns
+      volumes:
+      - name: model-volume
+        hostPath:
+          # Minikube otomatis membaca folder /home Linux-mu. Kita arahkan ke sana.
+          path: /home/gede/challangeSenior/mlruns
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend           # Nama ini akan jadi DNS/URL yang dipanggil Frontend
+spec:
+  selector:
+    app: backend
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000
+
+---
+# ==========================================
+# 2. DEPLOYMENT & SERVICE FRONTEND
+# ==========================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: image-frontend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8501
+        env:
+        - name: API_URL
+          value: "http://backend:8000/predict" # Nembak ke Service Backend K8s
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  type: NodePort          # Tipe NodePort agar bisa diakses dari browser luar
+  selector:
+    app: frontend
+  ports:
+  - protocol: TCP
+    port: 8501
+    targetPort: 8501

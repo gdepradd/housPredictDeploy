@@ -1,0 +1,21 @@
+# Abaikan Virtual Environment
+mlops-env/
+venv/
+.venv/
+
+# Abaikan Folder Model MLflow (Sangat Berat!)
+mlruns/
+outputs/
+
+# Abaikan file model manual jika ada
+*.pkl
+*.h5
+*.onnx
+
+# Abaikan cache python
+__pycache__/
+*.pyc
+
+# Abaikan file binary installer K8s & Minikube
+kubectl
+minikube-linux-amd64
