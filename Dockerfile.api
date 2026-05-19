@@ -14,8 +14,7 @@ COPY src/ src/
 
 # 5. PENTING: Copy folder mlruns (model) ke dalam container
 # Tanpa ini, container tidak punya model untuk di-load!
-COPY mlruns/ mlruns/
-
+RUN mkdir -p mlruns
 # 6. Buka port 8000 (Pintu akses FastAPI)
 EXPOSE 8000
 

@@ -5,27 +5,26 @@ on:
     branches: [ "main" ]
 
 env:
-  # Pastikan ini sudah sesuai dengan Username Docker Hub kamu
   DOCKER_USER: gdepradd 
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    # KUNCI: Pindah ke sini agar runner memaksa semua sub-action patuh pada Node.js 24
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true 
 
     steps:
     - name: Checkout Code
-      # UPGRADE: versi v3 -> v4 (Sudah support Node.js 24)
       uses: actions/checkout@v4
 
     - name: Login to Docker Hub
-      # UPGRADE: versi v2 -> v3 (Sudah support Node.js 24)
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build and Push Backend
-      # UPGRADE: versi v4 -> v5
       uses: docker/build-push-action@v5
       with:
         context: .
@@ -34,7 +33,6 @@ jobs:
         tags: ${{ env.DOCKER_USER }}/mlops-backend:latest
 
     - name: Build and Push Frontend
-      # UPGRADE: versi v4 -> v5
       uses: docker/build-push-action@v5
       with:
         context: .
