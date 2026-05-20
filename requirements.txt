@@ -6,3 +6,4 @@ uvicorn
 pydantic
 streamlit
 requests
+prometheus-client

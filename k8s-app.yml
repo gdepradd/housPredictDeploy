@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
       - name: backend
-        image: image-backend:latest
-        imagePullPolicy: Never  # KUNCI: Jangan download dari internet, pakai yang di Minikube
+        image: gdepradd/mlops-backend:latest  
+        imagePullPolicy: Always
         ports:
         - containerPort: 8000
         volumeMounts:
@@ -63,8 +63,8 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: image-frontend:latest
-        imagePullPolicy: Never
+        image: gdepradd/mlops-frontend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8501
         env:

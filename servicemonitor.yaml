@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: backend-monitor
+  labels:
+    release: mlops-monitor # Harus sama dengan nama release Helm kamu
+spec:
+  selector:
+    matchLabels:
+      app: backend # Harus sama dengan label di k8s-app.yaml milikmu
+  endpoints:
+  - port: web # Nama port target di service backend-mu
+    path: /metrics
+    interval: 15s

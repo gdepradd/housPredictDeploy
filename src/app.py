@@ -5,9 +5,13 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import pandas as pd
 import os
-
+from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
+from fastapi.responses import Response
 app = FastAPI(title="House Price Prediction")
-
+PREDICTION_COUNTER = Counter(
+    'mlops_total_predictions', 
+    'Total prediksi harga rumah yang dilakukan oleh model'
+)
 # --- LOGIKA PATH ---
 BASE_DIR = Path(__file__).resolve().parent.parent
 MLRUNS_DIR = BASE_DIR / "mlruns"
@@ -78,4 +82,9 @@ def predict(data: HouseData):
     
     df = pd.DataFrame([data.dict()])
     pred = model.predict(df)
+    PREDICTION_COUNTER.inc()
     return {"predicted_price": float(pred[0])}
+
+@app.get("/metrics")
+def metrics():
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
