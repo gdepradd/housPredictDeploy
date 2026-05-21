@@ -1,0 +1,10 @@
+artifact_location: file:///home/gede/challangeSenior/mlruns/860097084243247324/models/m-c76cc614c5ce40108d005b96ca96d4ee/artifacts
+creation_timestamp: 1768318991096
+experiment_id: '860097084243247324'
+last_updated_timestamp: 1768318993485
+model_id: m-c76cc614c5ce40108d005b96ca96d4ee
+model_type: null
+name: model
+source_run_id: d63ebccd0e154f0d986cb8c0484f0fc0
+status: 2
+status_message: null

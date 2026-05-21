@@ -1,0 +1,22 @@
+artifact_path: file:///home/gede/challangeSenior/mlruns/860097084243247324/models/m-c76cc614c5ce40108d005b96ca96d4ee/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.9.25
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.6.1
+mlflow_version: 3.1.4
+model_id: m-c76cc614c5ce40108d005b96ca96d4ee
+model_size_bytes: 209951
+model_uuid: m-c76cc614c5ce40108d005b96ca96d4ee
+prompts: null
+run_id: d63ebccd0e154f0d986cb8c0484f0fc0
+utc_time_created: '2026-01-13 15:43:11.103191'
