@@ -9,16 +9,14 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 4. Copy source code kita ke dalam container
-# Folder 'src' di laptop -> folder '/app/src' di container
 COPY src/ src/
 
-# 5. PENTING: Copy folder mlruns (model) ke dalam container
-# Tanpa ini, container tidak punya model untuk di-load!
-RUN mkdir -p mlruns
+# 5. PENTING: Menyalin model ML ke dalam image secara permanen
+# Biarkan Docker menyalin seluruh isi folder mlruns langsung ke /app/mlruns/
+COPY mlruns/ /app/mlruns/
+
 # 6. Buka port 8000 (Pintu akses FastAPI)
 EXPOSE 8000
-# Menyalin model ML ke dalam image secara permanen
-COPY mlruns/ /app/mlruns
+
 # 7. Perintah yang dijalankan saat container nyala
-# --host 0.0.0.0 artinya "terima koneksi dari mana saja" (wajib di Docker)
 CMD ["uvicorn", "src.app:app", "--host", "0.0.0.0", "--port", "8000"]
