@@ -17,7 +17,8 @@ COPY src/ src/
 RUN mkdir -p mlruns
 # 6. Buka port 8000 (Pintu akses FastAPI)
 EXPOSE 8000
-
+# Menyalin model ML ke dalam image secara permanen
+COPY mlruns/ /app/mlruns
 # 7. Perintah yang dijalankan saat container nyala
 # --host 0.0.0.0 artinya "terima koneksi dari mana saja" (wajib di Docker)
 CMD ["uvicorn", "src.app:app", "--host", "0.0.0.0", "--port", "8000"]
