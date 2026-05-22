@@ -4,11 +4,10 @@ venv/
 .venv/
 
 # Abaikan Folder Model MLflow (Sangat Berat!)
-mlruns/
 outputs/
 
 # Abaikan file model manual jika ada
-*.pkl
+
 *.h5
 *.onnx
 

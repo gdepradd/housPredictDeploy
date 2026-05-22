@@ -62,11 +62,11 @@ except Exception as e:
 
 # --- API ENDPOINTS (Tetap Sama) ---
 class HouseData(BaseModel):
-    bedrooms: float = 3.0
-    bathrooms: float = 2.0
+    bedrooms: int = 2
+    bathrooms: int = 1
     sqft_living: int = 1500
     sqft_lot: int = 4000
-    floors: float = 1.0
+    floors: int = 1
     waterfront: int = 0
     view: int = 0
     condition: int = 3

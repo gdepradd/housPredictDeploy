@@ -6,7 +6,7 @@ kind: Deployment
 metadata:
   name: backend-deployment
 spec:
-  replicas: 1             # Jumlah copy/replika backend yang jalan
+  replicas: 1             
   selector:
     matchLabels:
       app: backend
@@ -21,25 +21,21 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
-        volumeMounts:
-        - name: model-volume
-          mountPath: /app/mlruns
-      volumes:
-      - name: model-volume
-        hostPath:
-          # Minikube otomatis membaca folder /home Linux-mu. Kita arahkan ke sana.
-          path: /home/gede/challangeSenior/mlruns
+        # Catatan: volumeMounts dihapus karena model sudah tertanam di Docker Image
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend           # Nama ini akan jadi DNS/URL yang dipanggil Frontend
+  name: backend           # Nama Service kamu adalah 'backend'
+  labels:
+    app: backend          # Menambahkan label agar mudah dikenali kluster
 spec:
   selector:
     app: backend
   ports:
-  - protocol: TCP
+  - name: web             # <--- INI KUNCINYA! Sekarang port 8000 punya nama 'web'
+    protocol: TCP
     port: 8000
     targetPort: 8000
 
@@ -69,7 +65,7 @@ spec:
         - containerPort: 8501
         env:
         - name: API_URL
-          value: "http://backend:8000/predict" # Nembak ke Service Backend K8s
+          value: "http://backend:8000/predict" 
 
 ---
 apiVersion: v1
@@ -77,7 +73,7 @@ kind: Service
 metadata:
   name: frontend-service
 spec:
-  type: NodePort          # Tipe NodePort agar bisa diakses dari browser luar
+  type: NodePort          
   selector:
     app: frontend
   ports:
