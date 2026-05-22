@@ -1,25 +1,46 @@
 version: '3.8'
 
 services:
-  # --- Service 1: Backend (FastAPI + Model) ---
+  # --- BACKEND API (FastAPI) ---
   backend:
-    image: image-backend      # Menggunakan image yang tadi kamu build
-    container_name: mlops-backend
+    build:
+      context: .
+      dockerfile: Dockerfile.api
     ports:
-      - "8000:8000"           # Port API
-    volumes:
-      - ./mlruns:/app/mlruns  # Agar container bisa baca model di folder mlruns
+      - "8000:8000"
     environment:
-      - MLFLOW_TRACKING_URI=file:///app/mlruns
+      - MODEL_DIR=/app/mlruns
+    restart: always
 
-  # --- Service 2: Frontend (Streamlit) ---
+  # --- FRONTEND APP (Streamlit) ---
   frontend:
-    image: image-frontend     # Menggunakan image frontend
-    container_name: mlops-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend # <--- Pastikan nama Dockerfile frontend kamu sesuai
     ports:
-      - "8501:8501"           # Port Web App
+      - "8501:8501"
     environment:
-      # KUNCI: Frontend menembak ke hostname 'backend', bukan localhost
-      - API_URL=http://backend:8000/predict
+      - API_URL=http://backend:8000/predict # Komunikasi internal sesama container
     depends_on:
-      - backend               # Frontend menunggu backend nyala dulu
+      - backend
+    restart: always
+
+  # --- PROMETHEUS ---
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - backend
+    restart: always
+
+  # --- GRAFANA ---
+  grafana:
+    image: graphics/grafana:latest
+    ports:
+      - "3000:3000" # Railway akan otomatis mendeteksi port internal ini
+    depends_on:
+      - prometheus
+    restart: always
