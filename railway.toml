@@ -3,4 +3,4 @@ builder = "dockerfile"
 dockerfilePath = "Dockerfile.api" # <--- Beri tahu letak Dockerfile utama kamu
 
 [deploy]
-startCommand = "docker-compose up"
+startCommand = "docker-compose.yml up"
