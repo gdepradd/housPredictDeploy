@@ -11,11 +11,11 @@ st.markdown("---")
 col1, col2 = st.columns(2)
 
 with col1:
-    bedrooms = st.number_input("Kamar Tidur", min_value=1.0, value=3.0)
-    bathrooms = st.number_input("Kamar Mandi", min_value=1.0, value=2.0)
+    bedrooms = st.number_input("Kamar Tidur", min_value=1, value=2)
+    bathrooms = st.number_input("Kamar Mandi", min_value=1, value=2)
     sqft_living = st.number_input("Luas Bangunan (sqft)", min_value=100, value=1500)
     sqft_lot = st.number_input("Luas Tanah (sqft)", min_value=100, value=4000)
-    floors = st.number_input("Lantai", min_value=1.0, value=1.0)
+    floors = st.number_input("Lantai", min_value=1, value=1)
     waterfront = st.selectbox("Pemandangan Laut?", [0, 1], format_func=lambda x: "Ya" if x==1 else "Tidak")
 
 with col2:
